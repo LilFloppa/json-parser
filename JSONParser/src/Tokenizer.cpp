@@ -26,7 +26,75 @@ void JSONTokenizer::SkipWhitespace()
 	}
 }
 
+void JSONTokenizer::ProcessNumber(Token& token)
+{
+	token.Type = TokenType::Number;
+	char c = json[currentPos];
+	while (std::isdigit(c) || c == '+' || c == '-' || c == '.' || c == 'E' || c == 'e')
+	{
+		token.Value += c;
+		currentPos++;
 
+		if (currentPos == jsonSize)
+			throw std::logic_error("Invalid JSON file");
+
+		c = json[currentPos];
+	}
+
+	currentPos--;
+}
+
+void JSONTokenizer::ProcessString(Token& token)
+{
+	token.Type = TokenType::String;
+	char p = json[currentPos++];
+	char c = json[currentPos];
+	while (!(c == '"' && p != '\\'))
+	{
+		token.Value += c;
+		currentPos++;
+
+		if (currentPos == jsonSize)
+			throw std::logic_error("Invalid JSON file");
+
+		p = c;
+		c = json[currentPos];
+	}
+}
+
+void JSONTokenizer::ProcessArray(Token& token)
+{
+	token.Type = TokenType::Array;
+	char c = '\0';
+	while ((c = json[currentPos++]) != ']')
+		token.Value += c;
+
+	token.Value += c;
+	currentPos--;
+}
+
+void JSONTokenizer::ProcessBoolean(Token& token)
+{
+	token.Type = TokenType::Boolean;
+	if (json[currentPos] == 't')
+	{
+		token.Value = json.substr(currentPos, 4);
+		currentPos += 3;
+	}
+	else
+	{
+		token.Value = json.substr(currentPos, 5);
+		currentPos += 4;
+	}
+
+
+}
+
+void JSONTokenizer::ProcessNull(Token& token)
+{
+	token.Type = TokenType::Null;
+	currentPos += 3;
+}
 
 Token JSONTokenizer::GetToken()
 {
@@ -41,7 +109,19 @@ Token JSONTokenizer::GetToken()
 
 	char c = json[currentPos];
 
-	if (c == '{')
+	if (c == '"')
+	{
+		ProcessString(token);
+	}
+	else if (std::isdigit(c) || c == '-')
+	{
+		ProcessNumber(token);
+	}
+	else if (c == '[')
+	{
+		ProcessArray(token);
+	}
+	else if (c == '{')
 	{
 		token.Type = TokenType::OpenCurlyBrace;
 	}
@@ -49,23 +129,24 @@ Token JSONTokenizer::GetToken()
 	{
 		token.Type = TokenType::CloseCurlyBrace;
 	}
-	else if (c == '"')
+	else if (c == ',')
 	{
-		token.Type = TokenType::String;
-		currentPos++;
-
-		while ((c = json[currentPos++]) != '"')
-		{
-			token.Value.push_back(c);
-
-			if (currentPos == jsonSize)
-				throw std::logic_error("Invalid JSON file");
-		}
+		token.Type = TokenType::Comma;
 	}
-	else if (std::isdigit(c) || c == '-')
+	else if (c == ':')
 	{
-		token.Type == TokenType::Number;
+		token.Type = TokenType::Colon;
 	}
+	else if (c == 't' || c == 'f')
+	{
+		ProcessBoolean(token);
+	}
+	else if (c == 'n')
+	{
+		ProcessNull(token);
+	}
+
+	currentPos++;
 
 	return token;
 }

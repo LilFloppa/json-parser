@@ -22,6 +22,7 @@
     <ClInclude Include="src\Tokenizer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Tokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
