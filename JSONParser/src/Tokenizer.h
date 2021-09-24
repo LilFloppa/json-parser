@@ -7,9 +7,10 @@ enum class TokenType
 	None,
 	String,
 	Number,
-	Array,
 	Boolean,
 	Null,
+	OpenSquareBracket,
+	CloseSquareBracket,
 	OpenCurlyBrace,
 	CloseCurlyBrace,
 	Colon,
@@ -30,9 +31,6 @@ inline std::ostream& operator<<(std::ostream& stream, const TokenType& type)
 	case TokenType::Number:
 		stream << "Number";
 		break;
-	case TokenType::Array:
-		stream << "Array";
-		break;
 	case TokenType::Boolean:
 		stream << "Boolean";
 		break;
@@ -44,6 +42,12 @@ inline std::ostream& operator<<(std::ostream& stream, const TokenType& type)
 		break;
 	case TokenType::CloseCurlyBrace:
 		stream << "}";
+		break;
+	case TokenType::OpenSquareBracket:
+		stream << "[";
+		break;
+	case TokenType::CloseSquareBracket:
+		stream << "]";
 		break;
 	case TokenType::Colon:
 		stream << ":";
@@ -67,7 +71,6 @@ struct Token
 	TokenType Type = TokenType::None;
 };
 
-// TODO: Process array properly
 class JSONTokenizer
 {
 public:

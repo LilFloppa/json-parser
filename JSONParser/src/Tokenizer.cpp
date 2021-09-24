@@ -62,17 +62,6 @@ void JSONTokenizer::ProcessString(Token& token)
 	}
 }
 
-void JSONTokenizer::ProcessArray(Token& token)
-{
-	token.Type = TokenType::Array;
-	char c = '\0';
-	while ((c = json[currentPos++]) != ']')
-		token.Value += c;
-
-	token.Value += c;
-	currentPos--;
-}
-
 void JSONTokenizer::ProcessBoolean(Token& token)
 {
 	token.Type = TokenType::Boolean;
@@ -119,7 +108,11 @@ Token JSONTokenizer::GetToken()
 	}
 	else if (c == '[')
 	{
-		ProcessArray(token);
+		token.Type = TokenType::OpenSquareBracket;
+	}
+	else if (c == ']')
+	{
+		token.Type = TokenType::CloseSquareBracket;
 	}
 	else if (c == '{')
 	{
