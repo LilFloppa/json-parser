@@ -67,8 +67,8 @@ inline std::ostream& operator<<(std::ostream& stream, const TokenType& type)
 
 struct Token
 {
-	std::string Value;
 	TokenType Type = TokenType::None;
+	std::string Value;
 };
 
 class JSONTokenizer
