@@ -35,5 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="input\test.json" />
+    <None Include="input\simple_object.json" />
+    <None Include="input\nested_object.json" />
+    <None Include="input\simple_array.json" />
   </ItemGroup>
 </Project>

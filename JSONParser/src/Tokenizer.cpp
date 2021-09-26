@@ -82,6 +82,7 @@ void JSONTokenizer::ProcessBoolean(Token& token)
 void JSONTokenizer::ProcessNull(Token& token)
 {
 	token.Type = TokenType::Null;
+	token.Value = "null";
 	currentPos += 3;
 }
 
@@ -90,7 +91,7 @@ Token JSONTokenizer::GetToken()
 	SkipWhitespace();
 
 	Token token;
-	if (currentPos == jsonSize)
+	if (!HasMoreTokens())
 	{
 		token.Type = TokenType::End;
 		return token;

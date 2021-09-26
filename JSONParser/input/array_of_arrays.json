@@ -1,0 +1,5 @@
+{
+  "x": [[{ "x": 1, "y": 1}, {"x": 2, "y": 3}, {"a": 3, "c": 5, "b": true}], [1, 2, 3], [true, true, false, true]],
+  "y": false,
+  "z": "hello"
+}

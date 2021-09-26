@@ -28,6 +28,9 @@
     <ClCompile Include="src\Tokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="input\simple_array.json" />
+    <None Include="input\simple_object.json" />
+    <None Include="input\nested_object.json" />
     <None Include="input\test.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -135,7 +138,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>/experimental: module %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

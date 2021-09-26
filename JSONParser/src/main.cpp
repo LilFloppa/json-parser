@@ -4,6 +4,7 @@
 #include <variant>
 
 #include "Tokenizer.h"
+#include "JsonParser.h"
 
 std::string ReadFile(std::string filename)
 {
@@ -29,7 +30,7 @@ std::string ReadFile(std::string filename)
 
 int main()
 {
-	std::string content = ReadFile("input/test.json");
+	std::string content = ReadFile("input/array_of_arrays.json");
 
 	JSONTokenizer tokenizer(content);
 
@@ -38,6 +39,11 @@ int main()
 		Token token = tokenizer.GetToken();
 		std::cout << "Type: (" << token.Type << ") Value: (" << token.Value << ")" << std::endl;
 	}
+
+	JsonParser parser(content);
+	JsonElement* root = parser.Parse().get();
+
+	std::cout << root->ToString() << std::endl;
 
 	return 0;
 }
