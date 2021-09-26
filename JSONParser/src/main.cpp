@@ -30,7 +30,7 @@ std::string ReadFile(std::string filename)
 
 int main()
 {
-	std::string content = ReadFile("input/array_of_arrays.json");
+	std::string content = ReadFile("input/nested_object.json");
 
 	JSONTokenizer tokenizer(content);
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\JsonElement.h" />
     <ClInclude Include="src\JsonParser.h" />
     <ClInclude Include="src\Tokenizer.h" />
   </ItemGroup>
