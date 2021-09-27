@@ -28,9 +28,9 @@ public:
 	JsonElement(JsonType type, std::shared_ptr<JsonArray> arr) : Type(type), Value(arr) {}
 	JsonElement(JsonType type, std::shared_ptr<std::string> str) : Type(type), Value(str) {}
 
-	std::map<std::string, std::string> FindValue(std::string key);
+	std::map<std::string, std::string> FindValue(const std::string& key);
 
 private:
-	void FindValue(std::string key, std::string path, std::map<std::string, std::string>& result);
+	void FindValue(const std::string& key, std::string path, std::map<std::string, std::string>& result);
 	std::string ToString(int depth, std::string path, std::map<std::string, std::string>& map);
 };

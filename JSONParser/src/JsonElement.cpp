@@ -1,6 +1,6 @@
 #include "JsonElement.h"
 
-std::map<std::string, std::string> JsonElement::FindValue(std::string key)
+std::map<std::string, std::string> JsonElement::FindValue(const std::string& key)
 {
 	std::map<std::string, std::string> map;
 	FindValue(key, "/", map);
@@ -8,7 +8,7 @@ std::map<std::string, std::string> JsonElement::FindValue(std::string key)
 	return map;
 }
 
-void JsonElement::FindValue(std::string key, std::string path, std::map<std::string, std::string>& result)
+void JsonElement::FindValue(const std::string& key, std::string path, std::map<std::string, std::string>& result)
 {
 	switch (Type)
 	{
