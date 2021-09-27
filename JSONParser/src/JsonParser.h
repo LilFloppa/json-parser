@@ -1,3 +1,4 @@
+#pragma once
 #include "Tokenizer.h"
 #include "JsonElement.h"
 
