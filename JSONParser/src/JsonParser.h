@@ -1,8 +1,6 @@
 #include "Tokenizer.h"
 #include "JsonElement.h"
 
-
-
 class JsonParser
 {
 public:
