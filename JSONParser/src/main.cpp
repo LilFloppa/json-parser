@@ -110,15 +110,28 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	std::string content = ReadFile(filename);
+	try
+	{
+		std::string content = ReadFile(filename);
 
-	JsonParser parser(content);
-	JsonElement* root = parser.Parse().get();
+		JsonParser parser(content);
+		JsonElement* root = parser.Parse().get();
 
-	auto result = root->FindValue(key);
+		auto result = root->FindValue(key);
 
-	for (auto& pair : result)
-		std::cout << pair.first << ": " << pair.second << std::endl;
+		if (result.size() == 0)
+			std::cout << "There are no keys with this name" << std::endl;
+		else
+		{
+			for (auto& pair : result)
+				std::cout << pair.first << ": " << pair.second << std::endl;
+		}
 
-	return 0;
+		return 0;
+	}
+	catch (std::exception ex)
+	{
+		std::cout << ex.what() << std::endl;
+		return -1;
+	}
 }
