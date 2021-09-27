@@ -43,6 +43,8 @@ int main()
 	JsonParser parser(content);
 	JsonElement* root = parser.Parse().get();
 
+	auto result = root->FindValue("z");
+
 	std::cout << root->ToString() << std::endl;
 
 	return 0;

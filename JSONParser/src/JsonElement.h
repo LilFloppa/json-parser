@@ -13,7 +13,7 @@ enum class JsonType
 };
 
 using JsonObject = std::map<std::string, std::shared_ptr<class JsonElement>>;
-using JsonArray = std::vector< std::shared_ptr<class JsonElement>>;
+using JsonArray = std::vector<std::shared_ptr<class JsonElement>>;
 
 class JsonElement
 {
@@ -33,9 +33,12 @@ public:
 		return ToString(0);
 	}
 
-	std::vector<std::string> FindValue(std::string key)
+	std::map<std::string, std::string> FindValue(std::string key)
 	{
-		
+		std::map<std::string, std::string> map;
+		FindValue(key, "/", map);
+
+		return map;
 	}
 
 private:
@@ -94,7 +97,7 @@ private:
 			str += "     ";
 	}
 
-	void FindValue(std::string key, std::vector<std::string>& result)
+	void FindValue(std::string key, std::string path, std::map<std::string, std::string>& result)
 	{
 		switch (Type)
 		{
@@ -103,7 +106,10 @@ private:
 			auto obj = std::get<std::shared_ptr<JsonObject>>(Value);
 			for (auto& pair : *obj.get())
 			{
-				
+				pair.second->FindValue(key, path + pair.first + "/", result);
+
+				if (pair.first == key)
+					result[path] = pair.second->ToString();
 			}
 		}
 		break;
