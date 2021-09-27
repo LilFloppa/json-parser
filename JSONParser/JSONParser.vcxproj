@@ -24,6 +24,7 @@
     <ClInclude Include="src\Tokenizer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\JsonElement.cpp" />
     <ClCompile Include="src\JsonParser.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Tokenizer.cpp" />
