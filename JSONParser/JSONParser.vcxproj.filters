@@ -41,5 +41,8 @@
     <None Include="input\simple_object.json" />
     <None Include="input\nested_object.json" />
     <None Include="input\simple_array.json" />
+    <None Include="input\array_of_arrays.json" />
+    <None Include="input\array_of_objects.json" />
+    <None Include="input\nested_key.json" />
   </ItemGroup>
 </Project>

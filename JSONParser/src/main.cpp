@@ -30,7 +30,7 @@ std::string ReadFile(std::string filename)
 
 int main()
 {
-	std::string content = ReadFile("input/nested_object.json");
+	std::string content = ReadFile("input/nested_key.json");
 
 	JSONTokenizer tokenizer(content);
 
@@ -45,7 +45,10 @@ int main()
 
 	auto result = root->FindValue("z");
 
-	std::cout << root->ToString() << std::endl;
+	for (auto& pair : result)
+	{
+		std::cout << pair.first << ": " << pair.second << std::endl;
+	}
 
 	return 0;
 }

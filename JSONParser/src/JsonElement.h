@@ -28,11 +28,6 @@ public:
 	JsonElement(JsonType type, std::shared_ptr<JsonArray> arr) : Type(type), Value(arr) {}
 	JsonElement(JsonType type, std::shared_ptr<std::string> str) : Type(type), Value(str) {}
 
-	std::string ToString()
-	{
-		return ToString(0);
-	}
-
 	std::map<std::string, std::string> FindValue(std::string key)
 	{
 		std::map<std::string, std::string> map;
@@ -42,7 +37,7 @@ public:
 	}
 
 private:
-	std::string ToString(int depth)
+	std::string ToString(int depth, std::string path, std::map<std::string, std::string>& map)
 	{
 		std::string result;
 
@@ -53,48 +48,46 @@ private:
 			break;
 		case JsonType::Object:
 		{
-			result += "{\n";
+			result += "{ ";
 			auto obj = std::get<std::shared_ptr<JsonObject>>(Value);
 			for (auto& pair : *obj.get())
 			{
-				AddTabs(result, depth + 1);
 				result += pair.first;
 				result += ": ";
-				result += pair.second->ToString(depth + 1);
-				result += ",\n";
-			}
-
-			result.pop_back();
-			result.pop_back();
-			result += "\n";
-			AddTabs(result, depth);
-			result += "}";
-		}
-		break;
-		case JsonType::Array:
-		{
-			result += "[";
-			auto arr = std::get<std::shared_ptr<JsonArray>>(Value);
-			for (auto& item : *arr.get())
-			{
-				result += item->ToString();
+				if (map.find(path + pair.first) != map.end())
+					result += map[path + pair.first];
+				else
+					result += pair.second->ToString(depth + 1, path + pair.first + "/", map);
 				result += ", ";
 			}
 
 			result.pop_back();
 			result.pop_back();
-			result += "]";
+			if (result[result.size() - 1] != '}' && result[result.size() - 1] != ']')
+				result += " }";
+			else
+				result += "}";
+		}
+		break;
+		case JsonType::Array:
+		{
+			result += "[ ";
+			auto arr = std::get<std::shared_ptr<JsonArray>>(Value);
+			int i = 0;
+			for (auto& item : *arr.get())
+			{
+				result += item->ToString(0, path + std::to_string(i++) + "/", map);
+				result += ", ";
+			}
+
+			result.pop_back();
+			result.pop_back();
+			result += " ]";
 		}
 		break;
 		}
 
 		return result;
-	}
-
-	void AddTabs(std::string& str, int depth)
-	{
-		for (int i = 0; i < depth; i++)
-			str += "     ";
 	}
 
 	void FindValue(std::string key, std::string path, std::map<std::string, std::string>& result)
@@ -109,16 +102,17 @@ private:
 				pair.second->FindValue(key, path + pair.first + "/", result);
 
 				if (pair.first == key)
-					result[path] = pair.second->ToString();
+					result[path + key] = pair.second->ToString(0, path + key + "/", result);
 			}
 		}
 		break;
 		case JsonType::Array:
 		{	
 			auto arr = std::get<std::shared_ptr<JsonArray>>(Value);
+			int i = 0;
 			for (auto& item : *arr.get())
 			{
-
+				item->FindValue(key, path + std::to_string(i++) + "/", result);
 			}
 		}
 		break;
